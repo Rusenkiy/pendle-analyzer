@@ -63,6 +63,7 @@ export interface PendleTransaction {
   timestamp: string;
   txHash: string;
   action: string;
+  impliedApy?: number;
   inputs: TransactionIOItem[];
   outputs: TransactionIOItem[];
   valuation: TransactionValuation;

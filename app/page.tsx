@@ -3,8 +3,10 @@
 import { useState } from "react";
 import InputForm, { StrategyInputs } from "@/components/InputForm";
 import ResultsDashboard, { StrategyDataPoint } from "@/components/ResultsDashboard";
+import { getAssetDetails, getMarketData, getTransactions } from "@/lib/api/pendle";
+import { runStrategyCalculations } from "@/lib/math/ytCalculations";
 
-// Sample mockup data representing stETH YT decay and points accumulation
+// Sample mockup data representing stETH YT decay and points accumulation (Preview Mode)
 const MOCK_STRATEGY_DATA: StrategyDataPoint[] = [
   { timestamp: "2024-12-20 00:00", ytPrice: 0.0582, fairValue: 0.0551, pointsEarned: 1250 },
   { timestamp: "2024-12-21 00:00", ytPrice: 0.0515, fairValue: 0.0518, pointsEarned: 3800 },
@@ -13,6 +15,14 @@ const MOCK_STRATEGY_DATA: StrategyDataPoint[] = [
   { timestamp: "2024-12-24 00:00", ytPrice: 0.0385, fairValue: 0.0415, pointsEarned: 12800 },
   { timestamp: "2024-12-25 00:00", ytPrice: 0.0292, fairValue: 0.0382, pointsEarned: 15420 },
 ];
+
+interface SimulationResults {
+  data: StrategyDataPoint[];
+  totalWeightedPoints: number;
+  symbol: string;
+  network: string;
+  underlyingAmount: number;
+}
 
 export default function Home() {
   const [strategyInputs, setStrategyInputs] = useState<StrategyInputs>({
@@ -25,9 +35,60 @@ export default function Home() {
     pendleMultiplier: 5,
   });
 
-  const handleStrategySubmit = (inputs: StrategyInputs) => {
-    console.log("Dashboard received inputs:", inputs);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [results, setResults] = useState<SimulationResults | null>(null);
+
+  const handleStrategySubmit = async (inputs: StrategyInputs) => {
+    setIsLoading(true);
+    setError(null);
     setStrategyInputs(inputs);
+
+    try {
+      // 1. Retrieve asset details (symbol and maturity date)
+      console.log(`[Orchestrator] Retrieving asset details for ${inputs.ytContract}...`);
+      const assetDetails = await getAssetDetails(inputs.network, inputs.ytContract);
+      
+      // Convert datetime-local picker string to full ISO date format
+      const startIso = new Date(inputs.startTime).toISOString();
+
+      // 2. Fetch market APY/OHLCV and transaction history concurrently
+      console.log(`[Orchestrator] Fetching market data & transaction logs...`);
+      const fetches = await Promise.all([
+        getMarketData(inputs.network, inputs.marketContract, inputs.ytContract, startIso),
+        getTransactions(inputs.network, inputs.marketContract, 1000, 3000),
+      ]);
+      const transactions = fetches[1];
+
+      if (transactions.length === 0) {
+        throw new Error("No transactions were found on-chain for the specified market contract.");
+      }
+
+      // 3. Perform strategy math calculations
+      console.log(`[Orchestrator] Executing mathematical modeling...`);
+      const calculationResult = runStrategyCalculations(
+        transactions,
+        assetDetails.expiry,
+        inputs.pointsPerHourPerUnderlying,
+        inputs.underlyingAmount,
+        inputs.pendleMultiplier
+      );
+
+      setResults({
+        data: calculationResult.data,
+        totalWeightedPoints: calculationResult.totalWeightedPoints,
+        symbol: assetDetails.symbol,
+        network: inputs.network,
+        underlyingAmount: inputs.underlyingAmount,
+      });
+
+    } catch (err) {
+      console.error("[Orchestrator Error]:", err);
+      setError(err instanceof Error ? err.message : "An unexpected execution fault occurred.");
+      setResults(null);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -68,15 +129,61 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Right Column: Charting Results Dashboard */}
-        <div className="lg:col-span-2">
-          <ResultsDashboard
-            data={MOCK_STRATEGY_DATA}
-            totalWeightedPoints={15420.00}
-            symbol="YT-stETH-26DEC2024"
-            network={strategyInputs.network}
-            underlyingAmount={strategyInputs.underlyingAmount}
-          />
+        {/* Right Column: Charting Results Dashboard / Loading / Error Panels */}
+        <div className="lg:col-span-2 space-y-6">
+          {isLoading && (
+            <div className="border-2 border-brand-green bg-black p-8 font-mono text-center text-brand-green animate-pulse rounded-none">
+              <p className="text-sm font-bold tracking-widest mb-2">
+                &gt; ESTABLISHING ON-CHAIN CONNECTION...
+              </p>
+              <p className="text-xs text-slate-400">
+                RETRIEVING MARKET APY & TRANSACTION LOGS FROM PENDLE V2/V3 API
+              </p>
+            </div>
+          )}
+
+          {error && (
+            <div className="border-2 border-red-500 bg-red-950/10 p-6 font-mono text-slate-200 rounded-none">
+              <div className="flex items-center gap-2 mb-2 text-red-500 font-bold">
+                <span>●</span>
+                <span className="text-xs uppercase tracking-widest">CRITICAL EXECUTION ERROR</span>
+              </div>
+              <p className="text-sm border-l-2 border-red-500 pl-3 py-1 text-slate-300 font-mono">
+                {error}
+              </p>
+              <button
+                onClick={() => setError(null)}
+                className="mt-4 px-4 py-2 border border-red-500 text-red-500 hover:bg-red-500 hover:text-black font-bold uppercase text-[10px] tracking-wider rounded-none cursor-pointer transition-colors"
+              >
+                [DISMISS_ALARM]
+              </button>
+            </div>
+          )}
+
+          {!isLoading && !error && !results && (
+            <div className="space-y-4">
+              <div className="border border-brand-green bg-brand-green-dim/10 text-brand-green p-3 text-xs font-mono rounded-none">
+                <span className="font-bold">&gt;&gt; PREVIEW MODE:</span> Showing stETH default mock simulation. Adjust parameters and click execute to query live chain data.
+              </div>
+              <ResultsDashboard
+                data={MOCK_STRATEGY_DATA}
+                totalWeightedPoints={15420.00}
+                symbol="YT-stETH-26DEC2024"
+                network={strategyInputs.network}
+                underlyingAmount={strategyInputs.underlyingAmount}
+              />
+            </div>
+          )}
+
+          {!isLoading && !error && results && (
+            <ResultsDashboard
+              data={results.data}
+              totalWeightedPoints={results.totalWeightedPoints}
+              symbol={results.symbol}
+              network={results.network}
+              underlyingAmount={results.underlyingAmount}
+            />
+          )}
         </div>
       </div>
 
