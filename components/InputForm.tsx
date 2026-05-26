@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export type NetworkName = "ethereum" | "arbitrum" | "mantle";
 
@@ -30,6 +31,7 @@ const DEFAULT_INPUTS: StrategyInputs = {
 
 export default function InputForm({ onSubmit }: InputFormProps) {
   const [inputs, setInputs] = useState<StrategyInputs>(DEFAULT_INPUTS);
+  const { t } = useLanguage();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -70,7 +72,7 @@ export default function InputForm({ onSubmit }: InputFormProps) {
       <div className="flex items-center gap-2 mb-6 border-b border-dark-border pb-3">
         <span className="h-1.5 w-1.5 bg-brand-green"></span>
         <span className="text-[11px] font-bold tracking-widest text-slate-400 uppercase">
-          Configure Strategy Parameters
+          {t("form.title")}
         </span>
       </div>
 
@@ -81,7 +83,7 @@ export default function InputForm({ onSubmit }: InputFormProps) {
             htmlFor="network"
             className="block text-[10px] tracking-widest text-brand-green uppercase mb-1 font-bold"
           >
-            [01 // NETWORK]
+            {t("form.network")}
           </label>
           <select
             id="network"
@@ -102,7 +104,7 @@ export default function InputForm({ onSubmit }: InputFormProps) {
             htmlFor="marketContract"
             className="block text-[10px] tracking-widest text-brand-green uppercase mb-1 font-bold"
           >
-            [02 // MARKET_CONTRACT]
+            {t("form.market_contract")}
           </label>
           <input
             type="text"
@@ -122,7 +124,7 @@ export default function InputForm({ onSubmit }: InputFormProps) {
             htmlFor="ytContract"
             className="block text-[10px] tracking-widest text-brand-green uppercase mb-1 font-bold"
           >
-            [03 // YT_CONTRACT]
+            {t("form.yt_contract")}
           </label>
           <input
             type="text"
@@ -142,7 +144,7 @@ export default function InputForm({ onSubmit }: InputFormProps) {
             htmlFor="startTime"
             className="block text-[10px] tracking-widest text-brand-green uppercase mb-1 font-bold"
           >
-            [04 // START_TIME]
+            {t("form.start_time")}
           </label>
           <input
             type="datetime-local"
@@ -163,7 +165,7 @@ export default function InputForm({ onSubmit }: InputFormProps) {
               htmlFor="underlyingAmount"
               className="block text-[9px] tracking-wider text-brand-green uppercase mb-1 font-bold"
             >
-              [05 // AMOUNT]
+              {t("form.amount")}
             </label>
             <input
               type="number"
@@ -184,7 +186,7 @@ export default function InputForm({ onSubmit }: InputFormProps) {
               htmlFor="pointsPerHourPerUnderlying"
               className="block text-[9px] tracking-wider text-brand-green uppercase mb-1 font-bold"
             >
-              [06 // PTS_RATE]
+              {t("form.pts_rate")}
             </label>
             <input
               type="number"
@@ -205,7 +207,7 @@ export default function InputForm({ onSubmit }: InputFormProps) {
               htmlFor="pendleMultiplier"
               className="block text-[9px] tracking-wider text-brand-green uppercase mb-1 font-bold"
             >
-              [07 // MULTIPLIER]
+              {t("form.multiplier")}
             </label>
             <input
               type="number"
@@ -227,7 +229,7 @@ export default function InputForm({ onSubmit }: InputFormProps) {
           type="submit"
           className="w-full bg-brand-green hover:bg-brand-green-dim hover:text-brand-green text-black font-extrabold font-mono uppercase py-3.5 rounded-none transition-all duration-300 tracking-widest cursor-pointer border border-brand-green shadow-[4px_4px_0px_0px_rgba(0,255,102,0.15)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
         >
-          EXECUTE_STRATEGY_RUN.EXE
+          {t("form.submit")}
         </button>
       </div>
     </form>

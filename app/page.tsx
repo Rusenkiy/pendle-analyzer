@@ -5,6 +5,7 @@ import InputForm, { StrategyInputs } from "@/components/InputForm";
 import ResultsDashboard, { StrategyDataPoint } from "@/components/ResultsDashboard";
 import { getAssetDetails, getMarketData, getTransactions } from "@/lib/api/pendle";
 import { runStrategyCalculations } from "@/lib/math/ytCalculations";
+import { useLanguage } from "@/lib/LanguageContext";
 
 // Sample mockup data representing stETH YT decay and points accumulation (Preview Mode)
 const MOCK_STRATEGY_DATA: StrategyDataPoint[] = [
@@ -25,6 +26,8 @@ interface SimulationResults {
 }
 
 export default function Home() {
+  const { language, setLanguage, t } = useLanguage();
+
   const [strategyInputs, setStrategyInputs] = useState<StrategyInputs>({
     network: "ethereum",
     marketContract: "0x36d3ca43ae7939645c306e26603ce16e39a89192",
@@ -94,21 +97,42 @@ export default function Home() {
   return (
     <main className="min-h-screen cyber-grid flex flex-col justify-between p-6 md:p-12 selection:bg-brand-green selection:text-black text-slate-200">
       {/* HUD Header */}
-      <header className="border-b-2 border-brand-green pb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
-        <div>
+      <header className="border-b-2 border-brand-green pb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+        <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
             <span className="h-2 w-2 bg-brand-green animate-pulse inline-block"></span>
             <span className="text-xs font-mono tracking-widest text-brand-green uppercase">
-              System Active // v0.1.0-alpha
+              {t("common.status")}
             </span>
           </div>
           <h1 className="text-2xl md:text-4xl font-extrabold font-mono tracking-tight uppercase">
-            Pendle YT Timing Strategy Analyzer
+            {t("common.title")}
           </h1>
         </div>
-        <div className="text-right font-mono text-xs text-slate-400">
-          <p>LOC_UTC: {new Date().toISOString().substring(0, 10)}</p>
-          <p>NET_CONN: {strategyInputs.network.toUpperCase()}_MAINNET</p>
+        
+        {/* Language Switcher & Network Info */}
+        <div className="flex flex-col items-start md:items-end gap-4 shrink-0 font-mono text-xs">
+          {/* Brutalist Selector Panel */}
+          <div className="flex border border-dark-border bg-black rounded-none">
+            {(["en", "ua", "ru"] as const).map((lang) => (
+              <button
+                key={lang}
+                onClick={() => setLanguage(lang)}
+                className={`px-3 py-1.5 font-bold uppercase transition-all duration-200 cursor-pointer rounded-none border-r border-dark-border last:border-r-0 text-[10px] ${
+                  language === lang
+                    ? "bg-brand-green text-black"
+                    : "hover:bg-zinc-900 text-slate-400 hover:text-white"
+                }`}
+              >
+                {lang}
+              </button>
+            ))}
+          </div>
+
+          <div className="text-left md:text-right text-slate-400 space-y-0.5">
+            <p>{t("common.utc_time")}: {new Date().toISOString().substring(0, 10)}</p>
+            <p>{t("common.net_conn", { network: strategyInputs.network.toUpperCase() })}</p>
+          </div>
         </div>
       </header>
 
@@ -120,8 +144,8 @@ export default function Home() {
           
           {/* Diagnostic Console Log Card */}
           <div className="border-2 border-dark-border bg-dark-card p-4 font-mono text-xs text-slate-400 space-y-2">
-            <span className="text-brand-green font-bold block mb-1">{"[DIAGNOSTIC_TELEMETRY]"}</span>
-            <p>• NET: {strategyInputs.network}</p>
+            <span className="text-brand-green font-bold block mb-1">{t("common.diagnostic")}</span>
+            <p>• NET: {strategyInputs.network.toUpperCase()}</p>
             <p className="truncate">• MKT: {strategyInputs.marketContract}</p>
             <p className="truncate">• YT: {strategyInputs.ytContract}</p>
             <p>• START: {strategyInputs.startTime}</p>
@@ -134,10 +158,10 @@ export default function Home() {
           {isLoading && (
             <div className="border-2 border-brand-green bg-black p-8 font-mono text-center text-brand-green animate-pulse rounded-none">
               <p className="text-sm font-bold tracking-widest mb-2">
-                &gt; ESTABLISHING ON-CHAIN CONNECTION...
+                &gt; {t("common.loading")}
               </p>
               <p className="text-xs text-slate-400">
-                RETRIEVING MARKET APY & TRANSACTION LOGS FROM PENDLE V2/V3 API
+                {t("common.loading_sub")}
               </p>
             </div>
           )}
@@ -146,7 +170,7 @@ export default function Home() {
             <div className="border-2 border-red-500 bg-red-950/10 p-6 font-mono text-slate-200 rounded-none">
               <div className="flex items-center gap-2 mb-2 text-red-500 font-bold">
                 <span>●</span>
-                <span className="text-xs uppercase tracking-widest">CRITICAL EXECUTION ERROR</span>
+                <span className="text-xs uppercase tracking-widest">{t("common.error_title")}</span>
               </div>
               <p className="text-sm border-l-2 border-red-500 pl-3 py-1 text-slate-300 font-mono">
                 {error}
@@ -155,7 +179,7 @@ export default function Home() {
                 onClick={() => setError(null)}
                 className="mt-4 px-4 py-2 border border-red-500 text-red-500 hover:bg-red-500 hover:text-black font-bold uppercase text-[10px] tracking-wider rounded-none cursor-pointer transition-colors"
               >
-                [DISMISS_ALARM]
+                {t("common.dismiss")}
               </button>
             </div>
           )}
@@ -163,7 +187,7 @@ export default function Home() {
           {!isLoading && !error && !results && (
             <div className="space-y-4">
               <div className="border border-brand-green bg-brand-green-dim/10 text-brand-green p-3 text-xs font-mono rounded-none">
-                <span className="font-bold">&gt;&gt; PREVIEW MODE:</span> Showing stETH default mock simulation. Adjust parameters and click execute to query live chain data.
+                &gt;&gt; {t("common.preview_mode")}
               </div>
               <ResultsDashboard
                 data={MOCK_STRATEGY_DATA}
@@ -199,7 +223,7 @@ export default function Home() {
           <span className="hover:text-brand-green cursor-pointer transition-colors">
             [PROTOCOL_SPEC]
           </span>
-          <span className="text-slate-600">SECURE_SHELL: ACTIVE</span>
+          <span className="text-slate-600">{t("common.sec_shell")}</span>
         </div>
       </footer>
     </main>

@@ -1,25 +1,40 @@
 {
   "common": {
     "title": "Pendle YT Timing Strategy Analyzer",
-    "status": "System Active",
-    "net_conn": "Ethereum Mainnet",
-    "utc_time": "UTC Time"
+    "status": "System Active // v0.1.0-alpha",
+    "net_conn": "NET_CONN: {network}_MAINNET",
+    "utc_time": "LOC_UTC",
+    "preview_mode": "PREVIEW MODE: Showing stETH default mock simulation. Adjust parameters and click execute to query live chain data.",
+    "diagnostic": "[DIAGNOSTIC_TELEMETRY]",
+    "sec_shell": "SECURE_SHELL: ACTIVE",
+    "loading": "ESTABLISHING ON-CHAIN CONNECTION...",
+    "loading_sub": "RETRIEVING MARKET APY & TRANSACTION LOGS FROM PENDLE V2/V3 API",
+    "error_title": "CRITICAL EXECUTION ERROR",
+    "dismiss": "[DISMISS_ALARM]"
   },
-  "modules": {
-    "backtester": {
-      "title": "Strategy Backtesting",
-      "desc": "Analyze historical Yield Token (YT) purchasing performance. Simulate timing strategies based on discount rate deviation and implied yield trends.",
-      "status": "STATUS: STANDBY // STAGE_1_READY"
-    },
-    "analytics": {
-      "title": "Implied Yield Analysis",
-      "desc": "Compare real-time Pendle Implied Yield against realized underlying token yield. Uncover pricing inefficiencies and entry-point advantages.",
-      "status": "STATUS: STANDBY // DATA_FEED_PENDING"
-    },
-    "optimizer": {
-      "title": "YT Purchase Timing",
-      "desc": "Optimize acquisition of YT. Programmatically model time-decay against yield fluctuations to calculate mathematically optimal entry periods.",
-      "status": "STATUS: STANDBY // MODEL_LOADED"
-    }
+  "form": {
+    "title": "Configure Strategy Parameters",
+    "network": "[01 // NETWORK]",
+    "market_contract": "[02 // MARKET_CONTRACT]",
+    "yt_contract": "[03 // YT_CONTRACT]",
+    "start_time": "[04 // START_TIME]",
+    "amount": "[05 // AMOUNT]",
+    "pts_rate": "[06 // PTS_RATE]",
+    "multiplier": "[07 // MULTIPLIER]",
+    "submit": "EXECUTE_STRATEGY_RUN.EXE"
+  },
+  "dashboard": {
+    "title": "Simulation Results Console",
+    "run": "{symbol} Strategy Run",
+    "network": "NETWORK: {network}",
+    "collateral": "COLLATERAL: {amount} Underlying",
+    "stat_points": "[STAT_01 // TOTAL_WEIGHTED_POINTS]",
+    "stat_price": "[STAT_02 // LATEST_YT_PRICE]",
+    "stat_gap": "[STAT_03 // PRICE_TO_FAIR_GAP]",
+    "points_desc": "CUMULATIVE EARNED POINTS",
+    "price_desc": "YT / UNDERLYING RATIO",
+    "gap_buy": "UNDER FAIR VALUE (BUY)",
+    "gap_hold": "OVER VALUED (HOLD)",
+    "note": "Maximize point yields by purchasing Yield Tokens (YT) when the YT Price (green line) is under the Fair Value Curve (yellow dashed line)."
   }
 }

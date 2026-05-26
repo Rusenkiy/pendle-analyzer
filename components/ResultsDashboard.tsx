@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useLanguage } from "@/lib/LanguageContext";
 import {
   ResponsiveContainer,
   LineChart,
@@ -66,6 +67,8 @@ export default function ResultsDashboard({
   network,
   underlyingAmount,
 }: ResultsDashboardProps) {
+  const { t } = useLanguage();
+  
   // Extract latest metrics for display fallback
   const latestPrice = data.length > 0 ? data[data.length - 1].ytPrice : 0;
   const latestFairValue = data.length > 0 ? data[data.length - 1].fairValue : 0;
@@ -79,16 +82,16 @@ export default function ResultsDashboard({
           <div className="flex items-center gap-2 mb-1">
             <span className="h-1.5 w-1.5 bg-brand-green"></span>
             <span className="text-[10px] font-bold tracking-widest text-slate-400 uppercase">
-              Simulation Results Console
+              {t("dashboard.title")}
             </span>
           </div>
           <h2 className="text-xl font-bold uppercase text-slate-100">
-            {symbol} Strategy Run
+            {t("dashboard.run", { symbol })}
           </h2>
         </div>
         <div className="text-left md:text-right text-xs text-slate-400">
-          <p>NETWORK: {network.toUpperCase()}</p>
-          <p>COLLATERAL: {underlyingAmount} Underlying</p>
+          <p>{t("dashboard.network", { network: network.toUpperCase() })}</p>
+          <p>{t("dashboard.collateral", { amount: underlyingAmount })}</p>
         </div>
       </div>
 
@@ -97,7 +100,7 @@ export default function ResultsDashboard({
         {/* Card 1: Total Points */}
         <div className="border border-dark-border bg-black p-4 rounded-none flex flex-col justify-between">
           <span className="text-[10px] text-brand-green font-bold tracking-wider">
-            [STAT_01 // TOTAL_WEIGHTED_POINTS]
+            {t("dashboard.stat_points")}
           </span>
           <div className="my-3">
             <span className="text-2xl md:text-3xl font-extrabold text-white">
@@ -108,14 +111,14 @@ export default function ResultsDashboard({
             </span>
           </div>
           <span className="text-[10px] text-slate-500">
-            CUMULATIVE EARNED POINTS
+            {t("dashboard.points_desc")}
           </span>
         </div>
 
         {/* Card 2: Current YT Price */}
         <div className="border border-dark-border bg-black p-4 rounded-none flex flex-col justify-between">
           <span className="text-[10px] text-brand-green font-bold tracking-wider">
-            [STAT_02 // LATEST_YT_PRICE]
+            {t("dashboard.stat_price")}
           </span>
           <div className="my-3">
             <span className="text-2xl md:text-3xl font-extrabold text-white">
@@ -123,14 +126,14 @@ export default function ResultsDashboard({
             </span>
           </div>
           <span className="text-[10px] text-slate-500">
-            YT / UNDERLYING RATIO
+            {t("dashboard.price_desc")}
           </span>
         </div>
 
         {/* Card 3: Price vs Fair Value Gap */}
         <div className="border border-dark-border bg-black p-4 rounded-none flex flex-col justify-between">
           <span className="text-[10px] text-brand-green font-bold tracking-wider">
-            [STAT_03 // PRICE_TO_FAIR_GAP]
+            {t("dashboard.stat_gap")}
           </span>
           <div className="my-3">
             <span
@@ -143,7 +146,7 @@ export default function ResultsDashboard({
             </span>
           </div>
           <span className="text-[10px] text-slate-500">
-            {priceToFairGap <= 0 ? "UNDER FAIR VALUE (BUY)" : "OVER VALUED (HOLD)"}
+            {priceToFairGap <= 0 ? t("dashboard.gap_buy") : t("dashboard.gap_hold")}
           </span>
         </div>
       </div>
@@ -152,7 +155,7 @@ export default function ResultsDashboard({
       <div className="border border-brand-green bg-brand-green-dim/10 text-brand-green p-3 text-xs mb-6 rounded-none flex items-start gap-3">
         <span className="font-bold shrink-0">&gt; NOTE:</span>
         <p className="leading-normal">
-          Maximize point yields by purchasing Yield Tokens (YT) when the <strong className="underline">YT Price</strong> (green line) is <strong className="underline">under</strong> the <strong className="underline">Fair Value Curve</strong> (yellow dashed line).
+          {t("dashboard.note")}
         </p>
       </div>
 
