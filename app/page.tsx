@@ -1,6 +1,14 @@
+"use client";
+
+import InputForm, { StrategyInputs } from "@/components/InputForm";
+
 export default function Home() {
+  const handleStrategySubmit = (inputs: StrategyInputs) => {
+    console.log("Dashboard received inputs:", inputs);
+  };
+
   return (
-    <main className="min-h-screen cyber-grid flex flex-col justify-between p-6 md:p-12 selection:bg-brand-green selection:text-black">
+    <main className="min-h-screen cyber-grid flex flex-col justify-between p-6 md:p-12 selection:bg-brand-green selection:text-black text-slate-200">
       {/* HUD Header */}
       <header className="border-b-2 border-brand-green pb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
@@ -20,53 +28,48 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main Grid Content */}
-      <div className="my-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Module 1: Strategy Backtester */}
-        <div className="border-2 border-dark-border hover:border-brand-green bg-dark-card p-6 transition-all duration-300 group">
-          <span className="font-mono text-xs text-brand-green font-bold block mb-4">
-            [MODULE_01 // BACKTESTER]
-          </span>
-          <h2 className="text-xl font-bold font-mono uppercase mb-3 text-slate-200">
-            Strategy Backtesting
-          </h2>
-          <p className="text-slate-400 text-sm leading-relaxed mb-6">
-            Analyze historical Yield Token (YT) purchasing performance. Simulate timing strategies based on discount rate deviation and implied yield trends.
-          </p>
-          <div className="font-mono text-xs text-slate-500 group-hover:text-brand-green transition-colors">
-            STATUS: STANDBY // STAGE_1_READY
-          </div>
+      {/* Two-Column Interactive Dashboard Layout */}
+      <div className="my-12 grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        {/* Left Column: Strategy Config Form */}
+        <div className="lg:col-span-1">
+          <InputForm onSubmit={handleStrategySubmit} />
         </div>
 
-        {/* Module 2: Market Analytics */}
-        <div className="border-2 border-dark-border hover:border-brand-green bg-dark-card p-6 transition-all duration-300 group">
-          <span className="font-mono text-xs text-brand-green font-bold block mb-4">
-            [MODULE_02 // ANALYTICS]
-          </span>
-          <h2 className="text-xl font-bold font-mono uppercase mb-3 text-slate-200">
-            Implied Yield Analysis
-          </h2>
-          <p className="text-slate-400 text-sm leading-relaxed mb-6">
-            Compare real-time Pendle Implied Yield against realized underlying token yield. Uncover pricing inefficiencies and entry-point advantages.
-          </p>
-          <div className="font-mono text-xs text-slate-500 group-hover:text-brand-green transition-colors">
-            STATUS: STANDBY // DATA_FEED_PENDING
+        {/* Right Column: Interactive Output Console */}
+        <div className="lg:col-span-2 border-2 border-dark-border bg-dark-card p-6 h-full min-h-[500px] flex flex-col justify-between font-mono">
+          <div>
+            <div className="flex items-center justify-between border-b border-dark-border pb-3 mb-6">
+              <div className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 bg-brand-green"></span>
+                <span className="text-[11px] font-bold tracking-widest text-slate-400 uppercase">
+                  Telemetry Console
+                </span>
+              </div>
+              <span className="text-[10px] text-brand-green font-bold">
+                [OUTPUT_STREAM: STANDBY]
+              </span>
+            </div>
+            
+            <div className="text-sm space-y-4 text-slate-400">
+              <p className="text-slate-300">
+                &gt; SYSTEM INIT OK. Awaiting parameters execution...
+              </p>
+              <p>
+                &gt; Load a valid Yield Token (YT) contract and Market Contract from Pendle protocol to simulate entry points.
+              </p>
+              <div className="p-4 bg-black border border-dark-border space-y-2 text-xs">
+                <span className="text-brand-green block mb-1 font-bold">{"// LEGACY TEST CONFIG MATCHES:"}</span>
+                <p>• Network: Ethereum Mainnet</p>
+                <p>• Market: 0x36d3ca43ae7939645c306e26603ce16e39a89192 (stETH Market)</p>
+                <p>• YT Contract: 0xeb993b610b68f2631f70ca1cf4fe651db81f368e</p>
+                <p>• Start Time: 2023-01-01 00:00:00 UTC</p>
+              </div>
+            </div>
           </div>
-        </div>
 
-        {/* Module 3: Strategy Engine */}
-        <div className="border-2 border-dark-border hover:border-brand-green bg-dark-card p-6 transition-all duration-300 group">
-          <span className="font-mono text-xs text-brand-green font-bold block mb-4">
-            [MODULE_03 // OPTIMIZER]
-          </span>
-          <h2 className="text-xl font-bold font-mono uppercase mb-3 text-slate-200">
-            YT Purchase Timing
-          </h2>
-          <p className="text-slate-400 text-sm leading-relaxed mb-6">
-            Optimize acquisition of YT. Programmatically model time-decay against yield fluctuations to calculate mathematically optimal entry periods.
-          </p>
-          <div className="font-mono text-xs text-slate-500 group-hover:text-brand-green transition-colors">
-            STATUS: STANDBY // MODEL_LOADED
+          <div className="mt-8 border-t border-dark-border pt-4 text-[11px] text-slate-500">
+            <span className="text-brand-green animate-pulse mr-2">●</span>
+            READY FOR STRATEGY SIMULATION EXECUTION
           </div>
         </div>
       </div>
