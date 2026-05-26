@@ -14,8 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pendle YT Timing Strategy Analyzer",
+  title: "Pendle YT Analyzer",
   description: "Analytics and backtesting platform for Pendle Finance Yield Token (YT) purchase timing strategies",
+  authors: [{ name: "Rusenkiy" }],
 };
 
 export default function RootLayout({
@@ -29,7 +30,12 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <LanguageProvider>{children}</LanguageProvider>
+        <LanguageProvider>
+          <div className="flex-1 flex flex-col">{children}</div>
+          <footer className="border-t border-dark-border bg-black py-4 text-center font-mono text-[10px] tracking-widest text-slate-500 uppercase select-none">
+            BUILT BY <span className="text-brand-green font-bold">RUSENKIY 🐸</span>
+          </footer>
+        </LanguageProvider>
       </body>
     </html>
   );
