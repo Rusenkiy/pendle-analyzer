@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pendle YT Timing Strategy Analyzer (Web Dashboard)
+
+A modern, fast, and minimalist web-based analytics dashboard built with Next.js, TypeScript, and Tailwind CSS. It ports the core analytics and math calculations of the Pendle YT Timing Strategy to the web, allowing users to analyze pool yields, fetch live transaction data, and visualize the YT Fair Value Curve to maximize points earned.
+
+---
+
+## Features
+
+- **Cyberpunk Brutalist UI**: Modern dark theme with geometric structures, sharp corners (`rounded-none`), and striking tech-green highlights.
+- **On-chain Data Orchestration**: Queries the live Pendle API concurrently for market APY details, OHLCV token prices, and swap event transactions (with automatic pagination and rate-limit backoffs).
+- **TypeScript Strategy Math Engine**: A pure TypeScript port of the legacy calculations, completely eliminating heavy Python/Pandas dependencies while maintaining mathematical precision.
+- **Dynamic Dual-Axis Charting**: Implements interactive line visualizations using Recharts, plotting YT Price and Points Earned against the Fair Value Curve.
+- **Multi-Language Support (i18n)**: Fully translated in English (EN), Ukrainian (UA), and Russian (RU) with instant language selection toggles.
+- **Vercel Optimized**: Pre-configured structure ready for production deployment on Vercel.
+
+---
+
+## Tech Stack
+
+- **Framework**: [Next.js](https://nextjs.org/) (App Router, React 19)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Type Checking**: [TypeScript](https://www.typescriptlang.org/)
+- **Visualization**: [Recharts](https://recharts.org/)
+- **Code Linting**: [ESLint](https://eslint.org/)
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+Make sure you have [Node.js](https://nodejs.org/) (v18.17+ or newer) installed.
+
+### Installation
+
+1. Clone the repository and navigate to the project directory:
+   ```bash
+   git clone <repository-url>
+   cd Pendle-YT-Timing-Strategy-Analyzer
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Local Development
+
+Run the development server locally:
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the interactive dashboard.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build and Compilation Check
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Verify type checking, linter checks, and static export build compilation:
+```bash
+npm run build && npm run lint
+```
