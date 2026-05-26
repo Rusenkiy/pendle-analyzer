@@ -2,6 +2,10 @@ export const NETWORK_IDS = {
   arbitrum: 42161,
   ethereum: 1,
   mantle: 5000,
+  bnb: 56,
+  optimism: 10,
+  base: 8453,
+  avalanche: 43114,
 } as const;
 
 export type NetworkName = keyof typeof NETWORK_IDS;

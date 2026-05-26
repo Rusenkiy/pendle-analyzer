@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
 
-export type NetworkName = "ethereum" | "arbitrum" | "mantle";
+export type NetworkName = "ethereum" | "arbitrum" | "mantle" | "bnb" | "optimism" | "base" | "avalanche";
 
 export interface StrategyInputs {
   network: NetworkName;
@@ -95,6 +95,10 @@ export default function InputForm({ onSubmit }: InputFormProps) {
             <option value="ethereum">Ethereum Mainnet</option>
             <option value="arbitrum">Arbitrum One</option>
             <option value="mantle">Mantle Network</option>
+            <option value="bnb">BNB Chain</option>
+            <option value="optimism">Optimism</option>
+            <option value="base">Base</option>
+            <option value="avalanche">Avalanche C-Chain</option>
           </select>
         </div>
 
