@@ -4,10 +4,11 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 import en from "../locales/en.json";
 import ua from "../locales/ua.json";
 import ru from "../locales/ru.json";
+import zh from "../locales/zh.json";
 
-export type Language = "en" | "ua" | "ru";
+export type Language = "en" | "ua" | "ru" | "zh";
 
-const dictionaries = { en, ua, ru } as const;
+const dictionaries = { en, ua, ru, zh } as const;
 
 type DictType = typeof en;
 

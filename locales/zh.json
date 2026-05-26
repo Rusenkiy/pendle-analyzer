@@ -1,0 +1,40 @@
+{
+  "common": {
+    "title": "Pendle YT 定时购买策略分析器",
+    "status": "系统运行中 // v0.1.0-alpha",
+    "net_conn": "网络连接: {network}_MAINNET",
+    "utc_time": "UTC 时间",
+    "preview_mode": "预览模式: 正在显示 stETH 默认模拟数据。调整参数并点击 execute 获取链上实时数据。",
+    "diagnostic": "[诊断遥测数据]",
+    "sec_shell": "安全外壳连接: 已激活",
+    "loading": "正在建立链上连接...",
+    "loading_sub": "正在从 Pendle V2/V3 API 获取市场 APY 和交易记录",
+    "error_title": "关键执行错误",
+    "dismiss": "[清除警报]"
+  },
+  "form": {
+    "title": "配置策略参数",
+    "network": "[01 // 区块链网络]",
+    "market_contract": "[02 // 市场合约地址]",
+    "yt_contract": "[03 // YT 合约地址]",
+    "start_time": "[04 // 开始时间]",
+    "amount": "[05 // 标的资产数量]",
+    "pts_rate": "[06 // 积分率]",
+    "multiplier": "[07 // 乘数]",
+    "submit": "EXECUTE_STRATEGY_RUN.EXE"
+  },
+  "dashboard": {
+    "title": "模拟结果控制台",
+    "run": "{symbol} 策略分析",
+    "network": "当前网络: {network}",
+    "collateral": "质押担保: {amount} 标的资产",
+    "stat_points": "[STAT_01 // 加权总积分]",
+    "stat_price": "[STAT_02 // 最新 YT 价格]",
+    "stat_gap": "[STAT_03 // 价格与公允价值偏离度]",
+    "points_desc": "累计获得积分",
+    "price_desc": "YT / 标的资产 比例",
+    "gap_buy": "低于公允价值 (买入)",
+    "gap_hold": "高于公允价值 (观望)",
+    "note": "在 YT 价格 (绿色曲线) 低于公允价值曲线 (黄色虚线) 时购买 Yield Token (YT) 以最大化获得的积分。"
+  }
+}

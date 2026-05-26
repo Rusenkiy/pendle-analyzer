@@ -6,6 +6,7 @@ import ResultsDashboard, { StrategyDataPoint } from "@/components/ResultsDashboa
 import { getAssetDetails, getMarketData, getTransactions } from "@/lib/api/pendle";
 import { runStrategyCalculations } from "@/lib/math/ytCalculations";
 import { useLanguage } from "@/lib/LanguageContext";
+import LanguageDropdown from "@/components/LanguageDropdown";
 
 // Sample mockup data representing stETH YT decay and points accumulation (Preview Mode)
 const MOCK_STRATEGY_DATA: StrategyDataPoint[] = [
@@ -26,7 +27,7 @@ interface SimulationResults {
 }
 
 export default function Home() {
-  const { language, setLanguage, t } = useLanguage();
+  const { t } = useLanguage();
 
   const [strategyInputs, setStrategyInputs] = useState<StrategyInputs>({
     network: "ethereum",
@@ -112,22 +113,7 @@ export default function Home() {
         
         {/* Language Switcher & Network Info */}
         <div className="flex flex-col items-start md:items-end gap-4 shrink-0 font-mono text-xs">
-          {/* Brutalist Selector Panel */}
-          <div className="flex border border-dark-border bg-black rounded-none">
-            {(["en", "ua", "ru"] as const).map((lang) => (
-              <button
-                key={lang}
-                onClick={() => setLanguage(lang)}
-                className={`px-3 py-1.5 font-bold uppercase transition-all duration-200 cursor-pointer rounded-none border-r border-dark-border last:border-r-0 text-[10px] ${
-                  language === lang
-                    ? "bg-brand-green text-black"
-                    : "hover:bg-zinc-900 text-slate-400 hover:text-white"
-                }`}
-              >
-                {lang}
-              </button>
-            ))}
-          </div>
+          <LanguageDropdown />
 
           <div className="text-left md:text-right text-slate-400 space-y-0.5">
             <p>{t("common.utc_time")}: {new Date().toISOString().substring(0, 10)}</p>
