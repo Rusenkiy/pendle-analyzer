@@ -1,10 +1,33 @@
 "use client";
 
+import { useState } from "react";
 import InputForm, { StrategyInputs } from "@/components/InputForm";
+import ResultsDashboard, { StrategyDataPoint } from "@/components/ResultsDashboard";
+
+// Sample mockup data representing stETH YT decay and points accumulation
+const MOCK_STRATEGY_DATA: StrategyDataPoint[] = [
+  { timestamp: "2024-12-20 00:00", ytPrice: 0.0582, fairValue: 0.0551, pointsEarned: 1250 },
+  { timestamp: "2024-12-21 00:00", ytPrice: 0.0515, fairValue: 0.0518, pointsEarned: 3800 },
+  { timestamp: "2024-12-22 00:00", ytPrice: 0.0448, fairValue: 0.0482, pointsEarned: 6900 },
+  { timestamp: "2024-12-23 00:00", ytPrice: 0.0412, fairValue: 0.0449, pointsEarned: 9950 },
+  { timestamp: "2024-12-24 00:00", ytPrice: 0.0385, fairValue: 0.0415, pointsEarned: 12800 },
+  { timestamp: "2024-12-25 00:00", ytPrice: 0.0292, fairValue: 0.0382, pointsEarned: 15420 },
+];
 
 export default function Home() {
+  const [strategyInputs, setStrategyInputs] = useState<StrategyInputs>({
+    network: "ethereum",
+    marketContract: "0x36d3ca43ae7939645c306e26603ce16e39a89192",
+    ytContract: "0xeb993b610b68f2631f70ca1cf4fe651db81f368e",
+    startTime: "2023-01-01T00:00",
+    underlyingAmount: 1.0,
+    pointsPerHourPerUnderlying: 0.04,
+    pendleMultiplier: 5,
+  });
+
   const handleStrategySubmit = (inputs: StrategyInputs) => {
     console.log("Dashboard received inputs:", inputs);
+    setStrategyInputs(inputs);
   };
 
   return (
@@ -24,53 +47,36 @@ export default function Home() {
         </div>
         <div className="text-right font-mono text-xs text-slate-400">
           <p>LOC_UTC: {new Date().toISOString().substring(0, 10)}</p>
-          <p>NET_CONN: ETHEREUM_MAINNET</p>
+          <p>NET_CONN: {strategyInputs.network.toUpperCase()}_MAINNET</p>
         </div>
       </header>
 
       {/* Two-Column Interactive Dashboard Layout */}
       <div className="my-12 grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         {/* Left Column: Strategy Config Form */}
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-1 space-y-6">
           <InputForm onSubmit={handleStrategySubmit} />
+          
+          {/* Diagnostic Console Log Card */}
+          <div className="border-2 border-dark-border bg-dark-card p-4 font-mono text-xs text-slate-400 space-y-2">
+            <span className="text-brand-green font-bold block mb-1">{"[DIAGNOSTIC_TELEMETRY]"}</span>
+            <p>• NET: {strategyInputs.network}</p>
+            <p className="truncate">• MKT: {strategyInputs.marketContract}</p>
+            <p className="truncate">• YT: {strategyInputs.ytContract}</p>
+            <p>• START: {strategyInputs.startTime}</p>
+            <p>• COLLATERAL: {strategyInputs.underlyingAmount} ETH</p>
+          </div>
         </div>
 
-        {/* Right Column: Interactive Output Console */}
-        <div className="lg:col-span-2 border-2 border-dark-border bg-dark-card p-6 h-full min-h-[500px] flex flex-col justify-between font-mono">
-          <div>
-            <div className="flex items-center justify-between border-b border-dark-border pb-3 mb-6">
-              <div className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 bg-brand-green"></span>
-                <span className="text-[11px] font-bold tracking-widest text-slate-400 uppercase">
-                  Telemetry Console
-                </span>
-              </div>
-              <span className="text-[10px] text-brand-green font-bold">
-                [OUTPUT_STREAM: STANDBY]
-              </span>
-            </div>
-            
-            <div className="text-sm space-y-4 text-slate-400">
-              <p className="text-slate-300">
-                &gt; SYSTEM INIT OK. Awaiting parameters execution...
-              </p>
-              <p>
-                &gt; Load a valid Yield Token (YT) contract and Market Contract from Pendle protocol to simulate entry points.
-              </p>
-              <div className="p-4 bg-black border border-dark-border space-y-2 text-xs">
-                <span className="text-brand-green block mb-1 font-bold">{"// LEGACY TEST CONFIG MATCHES:"}</span>
-                <p>• Network: Ethereum Mainnet</p>
-                <p>• Market: 0x36d3ca43ae7939645c306e26603ce16e39a89192 (stETH Market)</p>
-                <p>• YT Contract: 0xeb993b610b68f2631f70ca1cf4fe651db81f368e</p>
-                <p>• Start Time: 2023-01-01 00:00:00 UTC</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-8 border-t border-dark-border pt-4 text-[11px] text-slate-500">
-            <span className="text-brand-green animate-pulse mr-2">●</span>
-            READY FOR STRATEGY SIMULATION EXECUTION
-          </div>
+        {/* Right Column: Charting Results Dashboard */}
+        <div className="lg:col-span-2">
+          <ResultsDashboard
+            data={MOCK_STRATEGY_DATA}
+            totalWeightedPoints={15420.00}
+            symbol="YT-stETH-26DEC2024"
+            network={strategyInputs.network}
+            underlyingAmount={strategyInputs.underlyingAmount}
+          />
         </div>
       </div>
 
