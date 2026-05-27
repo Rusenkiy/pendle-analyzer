@@ -14,13 +14,13 @@
   },
   "form": {
     "title": "Configure Strategy Parameters",
-    "network": "[01 // NETWORK]",
-    "market_contract": "[02 // MARKET_CONTRACT]",
-    "yt_contract": "[03 // YT_CONTRACT]",
-    "start_time": "[04 // START_TIME]",
-    "amount": "[05 // AMOUNT]",
-    "pts_rate": "[06 // PTS_RATE]",
-    "multiplier": "[07 // MULTIPLIER]",
+    "network": "[ NETWORK ]",
+    "market_contract": "[ MARKET_CONTRACT ]",
+    "yt_contract": "[ YT_CONTRACT ]",
+    "start_time": "[ START_TIME ]",
+    "amount": "[ AMOUNT ]",
+    "pts_rate": "[ PTS_RATE ]",
+    "multiplier": "[ MULTIPLIER ]",
     "submit": "EXECUTE_STRATEGY_RUN.EXE"
   },
   "dashboard": {

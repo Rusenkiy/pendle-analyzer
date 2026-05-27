@@ -14,13 +14,13 @@
   },
   "form": {
     "title": "配置策略参数",
-    "network": "[01 // 区块链网络]",
-    "market_contract": "[02 // 市场合约地址]",
-    "yt_contract": "[03 // YT 合约地址]",
-    "start_time": "[04 // 开始时间]",
-    "amount": "[05 // 标的资产数量]",
-    "pts_rate": "[06 // 积分率]",
-    "multiplier": "[07 // 乘数]",
+    "network": "[ 区块链网络 ]",
+    "market_contract": "[ 市场合约地址 ]",
+    "yt_contract": "[ YT 合约地址 ]",
+    "start_time": "[ 开始时间 ]",
+    "amount": "[ 标的资产数量 ]",
+    "pts_rate": "[ 积分率 ]",
+    "multiplier": "[ 乘数 ]",
     "submit": "EXECUTE_STRATEGY_RUN.EXE"
   },
   "dashboard": {
