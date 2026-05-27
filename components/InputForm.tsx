@@ -312,7 +312,7 @@ function HelpModal({ isOpen, onClose, title, content, imageSrc, imageAlt }: Help
         onClick={onClose}
       />
       {/* Dialog container */}
-      <div className="relative w-full max-w-md bg-black border-2 border-brand-green p-6 rounded-none shadow-[8px_8px_0px_0px_rgba(0,255,102,0.15)] z-10 font-mono text-slate-200">
+      <div className="relative w-[95%] md:max-w-5xl max-h-[90vh] overflow-y-auto bg-black border-2 border-brand-green p-6 md:p-8 rounded-none shadow-[8px_8px_0px_0px_rgba(0,255,102,0.15)] z-10 font-mono text-slate-200">
         <div className="flex justify-between items-center border-b border-zinc-800 pb-3 mb-4">
           <span className="text-brand-green font-bold uppercase text-[11px] tracking-wider">&gt; {title}</span>
           <button 
