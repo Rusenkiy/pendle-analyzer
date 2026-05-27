@@ -31,9 +31,9 @@ export default function Home() {
 
   const [strategyInputs, setStrategyInputs] = useState<StrategyInputs>({
     network: "ethereum",
-    marketContract: "0x36d3ca43ae7939645c306e26603ce16e39a89192",
-    ytContract: "0xeb993b610b68f2631f70ca1cf4fe651db81f368e",
-    startTime: "2023-01-01T00:00",
+    marketContract: "0x34280882267ffa6383b363e278b027be083bbe3b",
+    ytContract: "0x04b7fa1e727d7290d6e24fa9b426d0c940283a95",
+    startTime: "2026-03-29T00:00",
     underlyingAmount: 1.0,
     pointsPerHourPerUnderlying: 0.04,
     pendleMultiplier: 5,
@@ -178,7 +178,7 @@ export default function Home() {
               <ResultsDashboard
                 data={MOCK_STRATEGY_DATA}
                 totalWeightedPoints={15420.00}
-                symbol="YT-stETH-26DEC2024"
+                symbol="YT-WSTETH-30DEC2027"
                 network={strategyInputs.network}
                 underlyingAmount={strategyInputs.underlyingAmount}
               />
