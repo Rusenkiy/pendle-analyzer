@@ -31,7 +31,7 @@ const DEFAULT_INPUTS: StrategyInputs = {
 
 export default function InputForm({ onSubmit }: InputFormProps) {
   const [inputs, setInputs] = useState<StrategyInputs>(DEFAULT_INPUTS);
-  const [activeHelp, setActiveHelp] = useState<"marketContract" | "ytContract" | "startTime" | null>(null);
+  const [activeHelp, setActiveHelp] = useState<"marketContract" | "ytContract" | "startTime" | "amount" | "ptsRate" | "multiplier" | null>(null);
   const { t } = useLanguage();
 
   const handleChange = (
@@ -193,12 +193,21 @@ export default function InputForm({ onSubmit }: InputFormProps) {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
           {/* Underlying Amount */}
           <div>
-            <label
-              htmlFor="underlyingAmount"
-              className="block text-[9px] tracking-wider text-brand-green uppercase mb-1 font-bold"
-            >
-              {t("form.amount")}
-            </label>
+            <div className="flex items-center justify-between mb-1">
+              <label
+                htmlFor="underlyingAmount"
+                className="block text-[9px] tracking-wider text-brand-green uppercase font-bold"
+              >
+                {t("form.amount")}
+              </label>
+              <button
+                type="button"
+                onClick={() => setActiveHelp("amount")}
+                className="text-[9px] font-bold text-slate-500 hover:text-brand-green cursor-pointer select-none font-mono"
+              >
+                [ ? ]
+              </button>
+            </div>
             <input
               type="number"
               id="underlyingAmount"
@@ -214,12 +223,21 @@ export default function InputForm({ onSubmit }: InputFormProps) {
 
           {/* Points Per Hour Per Underlying */}
           <div>
-            <label
-              htmlFor="pointsPerHourPerUnderlying"
-              className="block text-[9px] tracking-wider text-brand-green uppercase mb-1 font-bold"
-            >
-              {t("form.pts_rate")}
-            </label>
+            <div className="flex items-center justify-between mb-1">
+              <label
+                htmlFor="pointsPerHourPerUnderlying"
+                className="block text-[9px] tracking-wider text-brand-green uppercase font-bold"
+              >
+                {t("form.pts_rate")}
+              </label>
+              <button
+                type="button"
+                onClick={() => setActiveHelp("ptsRate")}
+                className="text-[9px] font-bold text-slate-500 hover:text-brand-green cursor-pointer select-none font-mono"
+              >
+                [ ? ]
+              </button>
+            </div>
             <input
               type="number"
               id="pointsPerHourPerUnderlying"
@@ -235,12 +253,21 @@ export default function InputForm({ onSubmit }: InputFormProps) {
 
           {/* Pendle Multiplier */}
           <div>
-            <label
-              htmlFor="pendleMultiplier"
-              className="block text-[9px] tracking-wider text-brand-green uppercase mb-1 font-bold"
-            >
-              {t("form.multiplier")}
-            </label>
+            <div className="flex items-center justify-between mb-1">
+              <label
+                htmlFor="pendleMultiplier"
+                className="block text-[9px] tracking-wider text-brand-green uppercase font-bold"
+              >
+                {t("form.multiplier")}
+              </label>
+              <button
+                type="button"
+                onClick={() => setActiveHelp("multiplier")}
+                className="text-[9px] font-bold text-slate-500 hover:text-brand-green cursor-pointer select-none font-mono"
+              >
+                [ ? ]
+              </button>
+            </div>
             <input
               type="number"
               id="pendleMultiplier"
@@ -288,6 +315,27 @@ export default function InputForm({ onSubmit }: InputFormProps) {
         onClose={() => setActiveHelp(null)}
         title="Start Time Guide"
         content="Set the strategy start date. Check the Pendle charts for the earliest available data point for the specific pool."
+      />
+
+      <HelpModal 
+        isOpen={activeHelp === "amount"}
+        onClose={() => setActiveHelp(null)}
+        title="Amount Guide"
+        content="Enter the amount of underlying asset (e.g., ETH) you plan to use to buy YT."
+      />
+
+      <HelpModal 
+        isOpen={activeHelp === "ptsRate"}
+        onClose={() => setActiveHelp(null)}
+        title="Points Rate Guide"
+        content="Enter the base daily points emission rate for the underlying asset. You must find this value in the protocol's official documentation or Discord."
+      />
+
+      <HelpModal 
+        isOpen={activeHelp === "multiplier"}
+        onClose={() => setActiveHelp(null)}
+        title="Multiplier Guide"
+        content="Enter the Pendle points multiplier for this specific pool (e.g., 5x, 10x)."
       />
     </form>
   );
