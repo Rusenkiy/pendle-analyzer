@@ -33,7 +33,15 @@ export default function RootLayout({
         <LanguageProvider>
           <div className="flex-1 flex flex-col">{children}</div>
           <footer className="border-t border-dark-border bg-black py-4 text-center font-mono text-[10px] tracking-widest text-slate-500 uppercase select-none">
-            BUILT BY <span className="text-brand-green font-bold">RUSENKIY 🐸</span>
+            BUILT BY{" "}
+            <a
+              href="https://x.com/rusenkiy_eth"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-brand-green font-bold hover:underline transition-all cursor-pointer"
+            >
+              RUSENKIY 🐸
+            </a>
           </footer>
         </LanguageProvider>
       </body>
